@@ -11,6 +11,7 @@
 
         $Student = new Register($student_id, $student_name, $course, $year, $section);
         $Student->validate();
+        header('Location: ../ViewRecords.php');
     }
 
     function capitalize($name){

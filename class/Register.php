@@ -33,7 +33,6 @@
             $stmt->execute();
 
             echo "Student registered successfully.";
-            header("Location: ../index.php");
         }
     }
 ?>
