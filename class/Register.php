@@ -1,4 +1,6 @@
 <?php
+
+session_start();
     class Register extends Database{
         private $student_id;
         private $student_name;
@@ -15,8 +17,16 @@
         }
 
         public function validate(){
-            if(empty($this->student_id) || empty($this->student_name) || empty($this->course) || empty($this->year) || !isset($this->section)){
-                echo "Please fill up all fields.";
+            //check if student is already recorded
+            $query = "SELECT * FROM `student` WHERE `id` = :id";
+            $stmt = parent::connect()->prepare($query);
+            $stmt->bindParam(':id', $this->student_id);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($row > 0){
+                echo "<script>alert('Student is already recorded.');
+                window.location.href='../index.php'</script>";
+                exit();
             }else{
                 $this->register();
             }
@@ -32,7 +42,14 @@
             $stmt->bindParam(':section', $this->section);
             $stmt->execute();
 
-            echo "Student registered successfully.";
+            if($stmt->rowCount() > 0){
+                $_SESSION['course'] = $this->course;
+                $_SESSION['year'] = $this->year;
+                $_SESSION['section'] = $this->section;
+                header("Location: ../Records.php");
+            }else{
+                echo "Failed to register student.";
+            }
         }
     }
 ?>

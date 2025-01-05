@@ -1,4 +1,7 @@
 <?php
+
+    session_start();
+
     if(isset($_POST['submit'])){
         $student_id = trim($_POST['student_id']);
         $student_name = capitalize(trim($_POST['name']));
@@ -6,11 +9,14 @@
         $year = trim($_POST['year']);
         $section = $_POST['section'];
 
+
         require_once '../class/Database.php';
         require_once '../class/Register.php';
 
         $Student = new Register($student_id, $student_name, $course, $year, $section);
         $Student->validate();
+
+        $_SESSION['status'] = 'valid';
         header('Location: ../ViewRecords.php');
     }
 

@@ -1,3 +1,15 @@
+<?php
+    session_start();
+
+    if($_SESSION['status'] == 'invalid' || empty($_SESSION['status'])){
+        $_SESSION['status'] = 'invalid';
+    }
+
+    if($_SESSION['status'] == 'valid'){
+        header('Location: ./ViewRecords.php');
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
